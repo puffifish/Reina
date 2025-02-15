@@ -6,6 +6,8 @@
  */
 
 /// A Validator in PoCUP must stake tokens and perform minimal HPC tasks.
+use std::fmt;
+
 #[derive(Debug)]
 pub struct Validator {
     /// Unique identifier or name of the validator.
@@ -20,6 +22,7 @@ pub struct Validator {
 /// In Phase 1, this trivial puzzle always succeeds.
 #[inline(always)]
 pub fn trivial_puzzle() -> bool {
+    println!("Executing trivial puzzle...");
     true
 }
 
@@ -27,12 +30,14 @@ pub fn trivial_puzzle() -> bool {
 /// In a real scenario, failure (puzzle_passed = false) would indicate a problem.
 pub fn perform_useful_work(validator: &mut Validator) {
     validator.puzzle_passed = trivial_puzzle();
+    println!("Validator {} performed work; result: {}", validator.id, validator.puzzle_passed);
 }
 
 /// Increases the validator's stake by a specified amount.
 /// Phase 1 only tracks stake without enforcing actual token locking.
 pub fn stake(validator: &mut Validator, amount: u64) {
     validator.stake_amount += amount;
+    println!("Validator {} staked additional {} tokens. Total: {}", validator.id, amount, validator.stake_amount);
 }
 
 /// Checks if the validator failed the HPC puzzle and prints a warning.

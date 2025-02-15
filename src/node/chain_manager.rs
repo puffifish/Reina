@@ -17,17 +17,18 @@ impl ChainManager {
 
     /// Adds a new validator with the given id and stake.
     /// The validator's `puzzle_passed` is initially false.
+    /// Logs the addition.
     pub fn add_validator(&mut self, id: String, stake_amount: u64) {
-        let validator = Validator { id, stake_amount, puzzle_passed: false };
-        self.validators.push(validator);
+        println!("ChainManager: Adding validator {} with stake {}.", id, stake_amount);
+        self.validators.push(Validator { id, stake_amount, puzzle_passed: false });
     }
 
     /// Runs PoCUP tasks on all validators.
     /// For each validator, it calls `perform_useful_work` and then `slash_if_needed`.
     pub fn run_pocup_tasks(&mut self) {
         for v in &mut self.validators {
-            perform_useful_work(v);
-            slash_if_needed(v);
+            crate::pocup::pocup::perform_useful_work(v);
+            crate::pocup::pocup::slash_if_needed(v);
         }
     }
 }
